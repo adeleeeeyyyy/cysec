@@ -1,17 +1,16 @@
 import string
 import math
-import flask
+from flask import Flask, request, render_template, send_file
 
+app = Flask(__name__)
 
 def check_password_strength(password):
-    # Parameter awal
     length = len(password)
     has_upper = any(c.isupper() for c in password)
     has_lower = any(c.islower() for c in password)
     has_digit = any(c.isdigit() for c in password)
     has_special = any(c in string.punctuation for c in password)
     
-    # Menentukan jumlah karakter unik yang digunakan
     char_set = 0
     if has_upper:
         char_set += 26
@@ -22,19 +21,12 @@ def check_password_strength(password):
     if has_special:
         char_set += len(string.punctuation)
     
-    # Menghitung estimasi jumlah kombinasi password
     combinations = char_set ** length
+    hash_per_second = 1e9
     
-    # Kecepatan brute-force (hash per detik)
-    hash_per_second = 1e9  # 1 miliar hash per detik (kecepatan rata-rata superkomputer modern)
-    
-    # Menghitung estimasi waktu untuk meretas password (dalam detik)
     seconds_to_crack = combinations / hash_per_second
-    
-    # Konversi waktu ke unit yang lebih mudah dipahami
     time_to_crack = convert_time(seconds_to_crack)
     
-    # Menentukan kekuatan password
     strength = "Weak"
     if length >= 8 and has_upper and has_lower and has_digit and has_special:
         strength = "Strong"
@@ -62,22 +54,21 @@ def convert_time(seconds):
     
     return time_str.strip()
 
-
-
-app = Flask(__name__)
-
-@app.route('/',methods = ['GET'])
+@app.route('/', methods=['GET'])
 def index():
-        return render_template('')
+    return render_template('index.html')
 
-@app.route('/insert', methods = ['POST'])
+@app.route('/insert', methods=['POST'])
 def insert():
     password = request.form['passwordinput']
     strength, time_to_crack = check_password_strength(password)
-    
-# Contoh penggunaan
-password = input("Enter a password to check: ")
-strength, time_to_crack = check_password_strength(password)
+    return render_template('index.html', password=password, strength=strength, time_to_crack=time_to_crack)
 
-print(f"Password Strength: {strength}")
-print(f"Estimated Time to Crack: {time_to_crack}")
+if __name__ == '__main__':
+    app.run(debug=True)
+
+# Contoh penggunaan
+#password = input("Enter a password to check: ")
+#strength, time_to_crack = check_password_strength(password)
+#print(f"Password Strength: {strength}")
+#print(f"Estimated Time to Crack: {time_to_crack}")
