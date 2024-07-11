@@ -1,8 +1,22 @@
 import string
 import math
 from flask import Flask, request, render_template, send_file
+import random
+
 
 app = Flask(__name__)
+
+
+def generate_password(length=12):
+    # Membuat kumpulan karakter yang bisa digunakan dalam password
+    characters = string.ascii_letters + string.digits + string.punctuation
+    
+    # Mengacak karakter-karakter tersebut
+    password = ''.join(random.choice(characters) for _ in range(length))
+    
+    return password
+
+
 
 def check_password_strength(password):
     length = len(password)
@@ -63,6 +77,13 @@ def insert():
     password = request.form['passwordinput']
     strength, time_to_crack = check_password_strength(password)
     return render_template('index.html', password=password, strength=strength, time_to_crack=time_to_crack)
+
+@app.route('/generate', methods=['POST'])
+def generate():
+    generated_password = generate_password(16)
+    return render_template('index.html', generated_password=generated_password)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
