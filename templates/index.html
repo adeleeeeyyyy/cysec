@@ -59,7 +59,8 @@
         
         {% if generated_password %}
         <div class="result">
-            <p><strong>Generated Password:</strong> {{ generated_password }}</p>
+            <p><strong>Generated Password:</strong> <span id="generatedPassword">{{ generated_password }}</span></p>
+            <button onclick="copyPassword()">Copy</button>
         </div>
         {% endif %}
 
@@ -78,5 +79,17 @@
         </div>
         {% endif %}
     </div>
+    <script>
+        function copyPassword() {
+            var passwordText = document.getElementById("generatedPassword").innerText;
+            var tempInput = document.createElement("input");
+            tempInput.value = passwordText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            alert("Password copied to clipboard!");
+        }
+    </script>
 </body>
 </html>

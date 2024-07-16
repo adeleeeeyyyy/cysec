@@ -86,7 +86,7 @@ def generate():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5678)
 
 # Contoh penggunaan
 #password = input("Enter a password to check: ")
