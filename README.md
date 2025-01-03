@@ -3,7 +3,8 @@ If you're using windows, download python from https://www.python.org/ftp/python/
 
 If you got any error while execute the script, download python from the microsoft store.
 
-Run this project: <br>  
-``` python app.py       #for password strength checker ```
+Run this project: 
+``` python app.py ``` <br>
+<br>
 Clone this repository <br>
 ``` git clone https://github.com/adeleeeeyyyy/cysec.git ```
